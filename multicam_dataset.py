@@ -5,7 +5,7 @@ from torchvision.io import read_image
 from torchvision.transforms.v2 import functional as F
 from torchvision.tv_tensors import Image, BoundingBoxes, BoundingBoxFormat
 from typing import List, Dict, Tuple
-from camera import Camera
+from utils.camera import Camera
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -15,7 +15,7 @@ class SetType:
     VAL = "val"
     TEST = "test"
 
-class YoloMultiCamDataset(Dataset):
+class MultiCamDataset(Dataset):
     def __init__(self, base_dir: str, cameras: List[Camera], set_type: SetType = SetType.TRAIN, transforms=None):
         self.base_dir = base_dir
         self.cameras = cameras
@@ -113,10 +113,10 @@ class YoloMultiCamDataset(Dataset):
 if __name__ == "__main__":
     # Example usage
     base_dir = "data"
-    cameras = [Camera(name="firefly_left"), Camera(name="ximea")]
-    dataset = YoloMultiCamDataset(base_dir, cameras)
+    cameras = [Camera(name="firefly_left"), Camera(name="ximea_demosaic")]
+    dataset = MultiCamDataset(base_dir, cameras)
 
     sample = dataset[0]
     import utils.visual as visual
     visual.plot([sample["firefly_left"]])
-    visual.plot([sample["ximea"]], cmap='gray')
+    visual.plot([sample["ximea_demosaic"]])
